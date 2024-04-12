@@ -1,6 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { HelloService } from './hello.service';
 import { HelloResponse } from './hello.response.model';
+import { HelloRequest } from './hello.resquest.model';
 
 @Controller('hello')
 export class HelloController {
@@ -9,5 +10,10 @@ export class HelloController {
   @Get()
   getHello(): HelloResponse {
     return this.helloService.getHello();
+  }
+
+  @Post()
+  postHello(@Body() request: HelloRequest): HelloResponse {
+    return this.helloService.postHello(request);
   }
 }
