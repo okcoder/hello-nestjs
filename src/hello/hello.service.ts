@@ -5,16 +5,12 @@ import { HelloRequest } from './hello.resquest.model';
 @Injectable()
 export class HelloService {
   getHello(): HelloResponse {
-    const response = new HelloResponse();
-    response.message = 'Hello, World!';
-    response.date = new Date();
+    const response = new HelloResponse('Hello, World!', new Date());
     return response;
   }
 
   postHello(request: HelloRequest): HelloResponse {
-    const response = new HelloResponse();
-    response.message = `Hello, ${request.name}!`;
-    response.date = new Date();
+    const response = new HelloResponse(`Hello, ${request.name}!`, new Date());
     return response;
   }
 }
