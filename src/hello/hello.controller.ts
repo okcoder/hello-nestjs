@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Sse } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res, Sse } from '@nestjs/common';
 import { HelloService } from './hello.service';
 import { HelloResponse } from './hello.response.model';
 import { HelloRequest } from './hello.resquest.model';
 import { Observable, interval, map } from 'rxjs';
+import { Response } from 'express';
 
 @Controller('hello')
 export class HelloController {
@@ -23,5 +24,10 @@ export class HelloController {
     return interval(1000).pipe(
       map(() => ({ data: { message: 'hello world!', date: new Date() } })),
     );
+  }
+
+  @Post('sse')
+  async ssePost(@Body() request: HelloRequest, @Res() response: Response) {
+    this.helloService.ssePost(request, response);
   }
 }

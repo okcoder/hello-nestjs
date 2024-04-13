@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <title>SSE Post</title>
+</head>
+
+<body>
+    <form id="form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" value="okcoder"></input>
+        <label for="stream">Stream:</label>
+        <input type="checkbox" id="stream" />
+        <button type="submit">Submit</button>
+    </form>
+    <ul id="messages"></ul>
+    <script type="text/javascript">
+        const form = document.getElementById('form');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const stream = document.getElementById('stream').checked;
+            const response = await fetch('/hello/sse', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, stream }),
+            });
+            const messages = document.getElementById('messages');
+            if (stream) {
+                messages.innerHTML = '';
+                const reader = response.body.pipeThrough(new TextDecoderStream()).getReader()
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+                    messages.innerHTML += `${value}<br>`;
+                }
+            } else {
+                messages.innerHTML = await response.text();
+            }
+        });
+    </script>
+</body>
+
+</html>
