@@ -1,0 +1,11 @@
+<!--
+copy from https://github.com/nestjs/nest/blob/master/sample/28-sse/src/index.html
+-->
+<script type="text/javascript">
+    const eventSource = new EventSource('/hello/sse');
+    eventSource.onmessage = ({ data }) => {
+        const message = document.createElement('li');
+        message.innerText = 'New message: ' + data;
+        document.body.appendChild(message);
+    }
+</script>
